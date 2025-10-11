@@ -56,6 +56,8 @@
 - **Register**: 범용 32비트 레지스터 구현
 
 
+
+
 ## 🎛️ Key Features
 ### 🔧 Processor Features
 - **Single-Cycle Implementation**: 명령어당 1 클럭 사이클 실행
