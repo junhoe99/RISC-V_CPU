@@ -64,7 +64,7 @@
 ```
 📁RV32I_RISC_V/
 ├── 📂 RV32I_TOP.sv           # 최상위 프로세서 모듈
-│   └── 📂cpu_core.sv          # CPU 코어 (제어+데이터패스)
+│   └── 🗂️cpu_core.sv          # CPU 코어 (제어+데이터패스)
 │   │     ├── datapath.sv            
 │   │     ├── control_unit.sv        
 │   │     ├── ALU.sv                 # 산술 논리 연산 장치
@@ -77,13 +77,13 @@
 │   │     ├── pc_adder.sv            # PC 가산기
 │   │     ├── adder.sv               # PCADDER, JALADDER
 │   │     └── define.sv              # Opcode별 Instruction Type 정의
-│   └── 📂RAM                        # Data Memory
+│   └── 🗂️RAM                        # Data Memory
 │   │     └── data_memory.sv        
-│   └── 📂ROM                       # Instruction Memory
+│   └── 🗂️ROM                       # Instruction Memory
 │         └── instruction_memory.sv  
 │
-└── 🔎 Testbench               
-    └── tb.sv                  # 테스트벤치
+└── 📂 Testbench               
+    └── 🗂️tb.sv                  # 테스트벤치
 ```
 
 
