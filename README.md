@@ -7,10 +7,14 @@
 ## 🎛️ 핵심 설계 : RV32I CPU Core Architecture
 > **SystemVerilog HDL을 사용하여 설계한 RV32I RISC-V 프로세서**의 전체 구현
 
-- **Complete CPU Core**: datapath, control unit을 포함한 완전한 CPU Core 구현
-- **Harvard Architecture**: 명령어 메모리와 데이터 메모리 분리
-- **Modular Design**: 재사용 가능한 모듈식 설계 구조
-- **ISA Support**: RV32I 기본 명령어 세트 완전 구현
+- **Complete CPU Core**:
+   - datapath, control unit을 포함한 완전한 CPU Core 구현
+- **Harvard Architecture**:
+   - 명령어 메모리와 데이터 메모리 분리
+- **Modular Design**:
+   - 재사용 가능한 모듈식 설계 구조
+- **ISA Support**:
+   - RV32I 기본 명령어 세트 완전 구현
 
 | **Type** | **Instruction** | **Description** | **Operation** |
 |----------|-----------------|-----------------|---------------|
