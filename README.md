@@ -4,59 +4,6 @@
 
 > 이 프로젝트는 **SystemVerilog HDL기반 RV32I RISC-V 프로세서** 설계 프로젝트입니다. 32비트 RISC-V ISA의 기본 명령어들을 지원하며, 파이프라인 없이 single cycle 구현으로 설계되었습니다.
 
-## 🎛️ 핵심 설계 : RV32I CPU Core Architecture
-> **SystemVerilog HDL을 사용하여 설계한 RV32I RISC-V 프로세서**의 전체 구현
-
-- **Complete CPU Core**:
-   - datapath, control unit을 포함한 완전한 CPU Core 구현
-- **Harvard Architecture**:
-   - 명령어 메모리와 데이터 메모리 분리
-- **Modular Design**:
-   - 재사용 가능한 모듈식 설계 구조
-- **ISA Support**:
-   - RV32I 기본 명령어 세트 완전 구현
-
-| **Type** | **Instruction** | **Description** | **Operation** |
-|----------|-----------------|-----------------|---------------|
-| **R-Type** | ADD | Add | rd = rs1 + rs2 |
-| | SUB | Subtract | rd = rs1 - rs2 |
-| | SLL | Shift Left Logical | rd = rs1 << rs2[4:0] |
-| | SLT | Set Less Than | rd = (rs1 < rs2) ? 1 : 0 |
-| | SLTU | Set Less Than Unsigned | rd = (rs1 < rs2) ? 1 : 0 (unsigned) |
-| | XOR | Exclusive OR | rd = rs1 ^ rs2 |
-| | SRL | Shift Right Logical | rd = rs1 >> rs2[4:0] |
-| | SRA | Shift Right Arithmetic | rd = rs1 >>> rs2[4:0] |
-| | OR | Bitwise OR | rd = rs1 \| rs2 |
-| | AND | Bitwise AND | rd = rs1 & rs2 |
-| **I-Type** | ADDI | Add Immediate | rd = rs1 + imm |
-| | SLTI | Set Less Than Immediate | rd = (rs1 < imm) ? 1 : 0 |
-| | SLTIU | Set Less Than Immediate Unsigned | rd = (rs1 < imm) ? 1 : 0 (unsigned) |
-| | XORI | XOR Immediate | rd = rs1 ^ imm |
-| | ORI | OR Immediate | rd = rs1 \| imm |
-| | ANDI | AND Immediate | rd = rs1 & imm |
-| | SLLI | Shift Left Logical Immediate | rd = rs1 << imm[4:0] |
-| | SRLI | Shift Right Logical Immediate | rd = rs1 >> imm[4:0] |
-| | SRAI | Shift Right Arithmetic Immediate | rd = rs1 >>> imm[4:0] |
-| | JALR | Jump and Link Register | rd = PC + 4, PC = (rs1 + imm) & ~1 |
-| **I-Type Load** | LW | Load Word | rd = mem[rs1 + imm][31:0] |
-| | LH | Load Halfword | rd = sign_ext(mem[rs1 + imm][15:0]) |
-| | LB | Load Byte | rd = sign_ext(mem[rs1 + imm][7:0]) |
-| | LHU | Load Halfword Unsigned | rd = zero_ext(mem[rs1 + imm][15:0]) |
-| | LBU | Load Byte Unsigned | rd = zero_ext(mem[rs1 + imm][7:0]) |
-| **S-Type** | SW | Store Word | mem[rs1 + imm][31:0] = rs2 |
-| | SH | Store Halfword | mem[rs1 + imm][15:0] = rs2[15:0] |
-| | SB | Store Byte | mem[rs1 + imm][7:0] = rs2[7:0] |
-| **B-Type** | BEQ | Branch if Equal | if (rs1 == rs2) PC = PC + imm |
-| | BNE | Branch if Not Equal | if (rs1 != rs2) PC = PC + imm |
-| | BLT | Branch if Less Than | if (rs1 < rs2) PC = PC + imm |
-| | BGE | Branch if Greater or Equal | if (rs1 >= rs2) PC = PC + imm |
-| | BLTU | Branch if Less Than Unsigned | if (rs1 < rs2) PC = PC + imm (unsigned) |
-| | BGEU | Branch if Greater or Equal Unsigned | if (rs1 >= rs2) PC = PC + imm (unsigned) |
-| **U-Type** | LUI | Load Upper Immediate | rd = imm << 12 |
-| | AUIPC | Add Upper Immediate to PC | rd = PC + (imm << 12) |
-| **J-Type** | JAL | Jump and Link | rd = PC + 4, PC = PC + imm |
-
-
 
 
 ## 🏗️ System Architecture
@@ -108,15 +55,8 @@
 - **Adder**: 범용 가산기 (점프 주소 계산용)
 - **Register**: 범용 32비트 레지스터 구현
 
-## 🚀 Key Features
 
-### 📊 Instruction Set Architecture
-- **32-bit RISC-V RV32I**: 기본 정수 명령어 세트 완전 지원
-- **6 Instruction Types**: R, I, S, B, U, J 타입 명령어 완전 구현
-- **32 General-Purpose Registers**: x0(zero) ~ x31 레지스터
-- **Word-Aligned RAM Access**: 4바이트 단위 명령어 메모리 접근
-- **Byte-Aligned ROM Access**: Byte단위 데이터 메모리 접근
-  
+## 🎛️ Key Features
 ### 🔧 Processor Features
 - **Single-Cycle Implementation**: 명령어당 1 클럭 사이클 실행
 - **Harvard Architecture**: 명령어/데이터 메모리 분리
@@ -136,6 +76,50 @@
 - **Sign Extension**: 즉시값 부호 확장 처리
 - **Branch Resolution**: ALU 기반 분기 조건 판별
 - **Jump Support**: JAL/JALR을 위한 전용 주소 계산 경로
+
+### 🗃️ ISA Support:
+   - RV32I 기본 명령어 세트 구현
+
+| **Type** | **Instruction** | **Description** | **Operation** |
+|----------|-----------------|-----------------|---------------|
+| **R-Type** | ADD | Add | rd = rs1 + rs2 |
+| | SUB | Subtract | rd = rs1 - rs2 |
+| | SLL | Shift Left Logical | rd = rs1 << rs2[4:0] |
+| | SLT | Set Less Than | rd = (rs1 < rs2) ? 1 : 0 |
+| | SLTU | Set Less Than Unsigned | rd = (rs1 < rs2) ? 1 : 0 (unsigned) |
+| | XOR | Exclusive OR | rd = rs1 ^ rs2 |
+| | SRL | Shift Right Logical | rd = rs1 >> rs2[4:0] |
+| | SRA | Shift Right Arithmetic | rd = rs1 >>> rs2[4:0] |
+| | OR | Bitwise OR | rd = rs1 \| rs2 |
+| | AND | Bitwise AND | rd = rs1 & rs2 |
+| **I-Type** | ADDI | Add Immediate | rd = rs1 + imm |
+| | SLTI | Set Less Than Immediate | rd = (rs1 < imm) ? 1 : 0 |
+| | SLTIU | Set Less Than Immediate Unsigned | rd = (rs1 < imm) ? 1 : 0 (unsigned) |
+| | XORI | XOR Immediate | rd = rs1 ^ imm |
+| | ORI | OR Immediate | rd = rs1 \| imm |
+| | ANDI | AND Immediate | rd = rs1 & imm |
+| | SLLI | Shift Left Logical Immediate | rd = rs1 << imm[4:0] |
+| | SRLI | Shift Right Logical Immediate | rd = rs1 >> imm[4:0] |
+| | SRAI | Shift Right Arithmetic Immediate | rd = rs1 >>> imm[4:0] |
+| | JALR | Jump and Link Register | rd = PC + 4, PC = (rs1 + imm) & ~1 |
+| **I-Type Load** | LW | Load Word | rd = mem[rs1 + imm][31:0] |
+| | LH | Load Halfword | rd = sign_ext(mem[rs1 + imm][15:0]) |
+| | LB | Load Byte | rd = sign_ext(mem[rs1 + imm][7:0]) |
+| | LHU | Load Halfword Unsigned | rd = zero_ext(mem[rs1 + imm][15:0]) |
+| | LBU | Load Byte Unsigned | rd = zero_ext(mem[rs1 + imm][7:0]) |
+| **S-Type** | SW | Store Word | mem[rs1 + imm][31:0] = rs2 |
+| | SH | Store Halfword | mem[rs1 + imm][15:0] = rs2[15:0] |
+| | SB | Store Byte | mem[rs1 + imm][7:0] = rs2[7:0] |
+| **B-Type** | BEQ | Branch if Equal | if (rs1 == rs2) PC = PC + imm |
+| | BNE | Branch if Not Equal | if (rs1 != rs2) PC = PC + imm |
+| | BLT | Branch if Less Than | if (rs1 < rs2) PC = PC + imm |
+| | BGE | Branch if Greater or Equal | if (rs1 >= rs2) PC = PC + imm |
+| | BLTU | Branch if Less Than Unsigned | if (rs1 < rs2) PC = PC + imm (unsigned) |
+| | BGEU | Branch if Greater or Equal Unsigned | if (rs1 >= rs2) PC = PC + imm (unsigned) |
+| **U-Type** | LUI | Load Upper Immediate | rd = imm << 12 |
+| | AUIPC | Add Upper Immediate to PC | rd = PC + (imm << 12) |
+| **J-Type** | JAL | Jump and Link | rd = PC + 4, PC = PC + imm |
+
 
 
 ## 🎯 Key Parameters
