@@ -37,10 +37,10 @@ module tb ();
 
         
         // 각 클럭마다 instruction과 메모리 연산 결과 출력        
-        repeat (30) begin
+        repeat (60) begin
             @(posedge clk); 
         end
-        $display("=== U-type Instruction Test End ===");
+        $display("=== J-type Instruction Test End ===");
         $stop;
     end
 endmodule

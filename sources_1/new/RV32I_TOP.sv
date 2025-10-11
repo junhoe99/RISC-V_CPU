@@ -32,6 +32,7 @@ module RV32I_TOP(
     logic [1:0] w_store_size;
     logic [31:0] w_dRdata;
     logic [1:0] w_load_size; // LW 명령어에 해당하는 load_size 설정
+    logic [2:0] w_funct3;    // funct3 신호 추가. funct3은 LBU/LHU 구분에 사용됨
   
 
     instruction_memory U_IM (
@@ -49,7 +50,8 @@ module RV32I_TOP(
         .dAddr(w_dAddr),
         .dWdata(w_dWdata),
         .store_size(w_store_size),
-        .load_size(w_load_size) // LW 명령어에 해당하는 load_size 설정
+        .load_size(w_load_size), // LW 명령어에 해당하는 load_size 설정
+        .funct3(w_funct3)        // funct3 출력 연결
     );
 
     data_memory U_DM (
@@ -59,6 +61,7 @@ module RV32I_TOP(
         .dWdata(w_dWdata),
         .store_size(w_store_size),
         .load_size(w_load_size), // LW 명령어에 해당하는 load_size 설정
+        .funct3(w_funct3),       // funct3 입력 연결
         .dRdata(w_dRdata)
     );
 

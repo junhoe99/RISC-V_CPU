@@ -16,11 +16,10 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module pc_adder(
+module adder(
     input logic [31:0] a,
     input logic [31:0] b,
     output logic [31:0] sum

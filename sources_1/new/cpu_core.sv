@@ -30,7 +30,8 @@ module cpu_core (
     output logic [31:0] dAddr,
     output logic [31:0] dWdata,
     output logic [1:0] store_size,
-    output logic [1:0] load_size  // LW 명령어에 해당하는 load_size 설정
+    output logic [1:0] load_size,  // LW 명령어에 해당하는 load_size 설정
+    output logic [2:0] funct3      // funct3 출력 추가. funct3은 LBU/LHU 구분에 사용됨
 );
 
 
@@ -38,14 +39,17 @@ module cpu_core (
     wire [3:0] w_ALU_Controls;
     wire w_reg_wr_en;
     wire w_ALUSrcMuxSel;
-    wire [1:0] w_RAM2RegWSel; // 누락된 신호 선언 추가
+    wire [2:0] w_RAM2RegWSel;  // 3비트로 확장
     wire [31:0] w_pc;
     wire w_branch;
+    wire JAL;
+    wire JALR;
+
 
 
 
     assign w_iData = iData;
-    assign iAddr  = w_pc;
+    assign iAddr   = w_pc;
 
 
 
@@ -59,11 +63,14 @@ module cpu_core (
         .ALUSrcMuxSel(w_ALUSrcMuxSel),
         .RAM2RegWSel(w_RAM2RegWSel),
         .branch(w_branch),
+        .JAL(JAL),
+        .JALR(JALR),
         .dRdata(dRdata),
         .reg_wr_en(w_reg_wr_en),
         .iAddr(w_pc),
         .dAddr(dAddr),
-        .dWdata(dWdata)
+        .dWdata(dWdata),
+        .funct3(funct3)  // funct3 출력 연결
     );
 
     control_unit U_CU (
@@ -71,11 +78,13 @@ module cpu_core (
         .ALU_Controls(w_ALU_Controls),
         .reg_wr_en(w_reg_wr_en),  //reg_file의 write enable
         .ALUSrcMuxSel(w_ALUSrcMuxSel),
-        .RAM2RegWSel(w_RAM2RegWSel),
         .d_wr_en(d_wr_en),  // RAM의 write enable
+        .RAM2RegWSel(w_RAM2RegWSel),
         .store_size(store_size),
         .load_size(load_size),  // LW 명령어에 해당하는 load_size 설정
-        .branch(w_branch)
+        .branch(w_branch),
+        .JAL(JAL),
+        .JALR(JALR)
     );
 
 

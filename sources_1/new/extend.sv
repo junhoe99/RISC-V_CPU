@@ -57,6 +57,15 @@ module extend (
             imm_Ext = {iData[31:12], 12'b0}; // U-type LUI 명령어의 immediate 값 추출 및 확장. 상위 20비트는 그대로, 하위 12비트는 0으로 채움
             `OP_U_AUIPC_TYPE:
             imm_Ext = {iData[31:12], 12'b0}; // U-type AUIPC 명령어의 immediate 값 추출 및 확장. 상위 20비트는 그대로, 하위 12비트는 0으로 채
+            `OP_J_JAL_TYPE:
+            imm_Ext = {
+                {12{iData[31]}}, iData[19:12], iData[20], iData[30:21], 1'b0
+            };  // J-type JAL 명령어의 immediate 값 추출 및 확장.
+                // imm[20|10:1|11|19:12|0] 형태로 비트들이 흩어져 있으므로 이를 재조합
+            `OP_I_JALR_TYPE:
+            imm_Ext = {
+                {20{iData[31]}}, iData[31:20]
+            };  // J-type JALR 명령어의 immediate 값 추출 및 확장. I-type과 동일한 형태
             default: begin
                 imm_Ext = 32'bx; // 정의되지 않은 명령어에 대해선 X 처리
             end

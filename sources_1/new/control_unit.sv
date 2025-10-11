@@ -17,7 +17,7 @@
 // Revision 0.01 - File Created
 // Additional Comments:
 // 
-//////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 `include "define.sv"
 
 module control_unit (
@@ -26,43 +26,53 @@ module control_unit (
     output logic reg_wr_en,
     output logic ALUSrcMuxSel,
     output logic d_wr_en,
-    output logic [1:0] RAM2RegWSel, // 0: ALU_Result, 1: dRdata (데이터 메모리에서 읽은 데이터)
+    output logic [2:0] RAM2RegWSel, // 0: ALU_Result, 1: dRdata, 2: imm_Ext, 3: pc_plus_imm, 4: pc_plus_4
     output logic [1:0] store_size,  // 00: sb(8bit), 01: sh(16bit), 10: sw(32bit),
-    output logic [1:0] load_size,  // 00: lb(8bit), 01: lh(16bit), 10: lw(32bit)
-    output logic branch
+    output logic [1:0] load_size,  // 00: lb(8bit), 01: lh(16bit), 10: lw(32bit), 11: lbu/lhu(unsigned)
+    output logic branch,
+    output logic JAL,  // JAL 제어 신호
+    output logic JALR  // JALR 제어 신호
 );
 
 
     // controls 
     // 3-bit control signal for ALU operation
     wire  [6:0] funct7 = iData[31:25];
-    wire  [2:0] funct3 = iData[14:12];
+    wire  [2:0] funct3 = iData[14:12];  // funct3은 LBU/LHU 구분에 사용됨
     wire  [6:0] opcode = iData[6:0];
 
 
-    logic [5:0] controls;
-    assign {RAM2RegWSel, ALUSrcMuxSel, reg_wr_en, d_wr_en, branch} = controls;
+    logic [8:0] controls;
+    assign {RAM2RegWSel, ALUSrcMuxSel, reg_wr_en, d_wr_en, branch, JAL, JALR} = controls;
 
 
+    // RAM2RegWSel and PC source selection logic
     always_comb begin
         case (opcode)
             `OP_R_TYPE:
-            controls = 6'b000100;  // R-type: write enable (RAM2RegWSel=2'b00, ALUSrcMuxSel=0, reg_wr_en=1, d_wr_en=0, branch = 0)
+            controls = 9'b000010000;  // R-type: (RAM2RegWSel=3'b000, ALUSrcMuxSel=0, reg_wr_en=1, d_wr_en=0, branch=0, JAL=0, JALR=0)
             `OP_S_TYPE:
-            controls = 6'b001010;  // S-type: no write (RAM2RegWSel=2'b00, ALUSrcMuxSel=1, reg_wr_en=0, d_wr_en=1, branch = 0)
+            controls = 9'b000101000;  // S-type: (RAM2RegWSel=3'b000, ALUSrcMuxSel=1, reg_wr_en=0, d_wr_en=1, branch=0, JAL=0, JALR=0)
             `OP_IL_TYPE:
-            controls = 6'b011100;  // IL-type Load: write enable (RAM2RegWSel=2'b01, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0, branch = 0)
+            controls = 9'b001110000;  // IL-type Load: (RAM2RegWSel=3'b001, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0, branch=0, JAL=0, JALR=0)
             `OP_I_TYPE:
-            controls = 6'b001100;  // I-type ALU: write enable (RAM2RegWSel=2'b00, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0, branch = 0). I-type의 명령어들은 register의 값들을 변경시키고 메모리와의 상호작용은 따로 없음. 따라서 RAM2RegWSel=0, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0
+            controls = 9'b000110000;  // I-type ALU: (RAM2RegWSel=3'b000, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0, branch=0, JAL=0, JALR=0)
             `OP_B_TYPE:
-            controls = 6'b000001;       // B-type ALU: write enable (RAM2RegWSel=2'b00, ALUSrcMuxSel=0(0으로 해야 ALU에 rs2가 입력되고, comparator로 비교 가능), reg_wr_en=0, d_wr_en=0, branch = 1).
+            controls = 9'b000000100;  // B-type: (RAM2RegWSel=3'b000, ALUSrcMuxSel=0, reg_wr_en=0, d_wr_en=0, branch=1, JAL=0, JALR=0)
             `OP_U_LUI_TYPE:
-            controls = 6'b101100;  // U-type LUI: write enable (RAM2RegWSel=2'b10, ALUSrcMuxSel=1(imm선택), reg_wr_en=1, d_wr_en=0, branch = 0)
+            controls = 9'b010110000;  // U-type LUI: (RAM2RegWSel=3'b010, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0, branch=0, JAL=0, JALR=0)
             `OP_U_AUIPC_TYPE:
-            controls = 6'b111100;  // U-type AUIPC: write enable (RAM2RegWSel=2'b11, ALUSrcMuxSel=1(imm 선택), reg_wr_en=1, d_wr_en=0, branch = 0)
-        default: controls = 6'b000000;
+            controls = 9'b011110000;  // U-type AUIPC: (RAM2RegWSel=3'b011, ALUSrcMuxSel=1, reg_wr_en=1, d_wr_en=0, branch=0, JAL=0, JALR=0)
+            `OP_J_JAL_TYPE:
+            controls = 9'b100010110;  // JAL: (RAM2RegWSel=3'b100, ALUSrcMuxSel=0, reg_wr_en=1, d_wr_en=0, branch=0, JAL=1, JALR=0)
+            `OP_I_JALR_TYPE:
+            controls = 9'b100010101;  // JALR: (RAM2RegWSel=3'b100, ALUSrcMuxSel=0, reg_wr_en=1, d_wr_en=0, branch=0, JAL=0, JALR=1)
+
+        default: controls = 9'b000000000;
         endcase
     end
+
+
 
     // Write size control for S-type instructions based on funct3
     always_comb begin
@@ -82,9 +92,11 @@ module control_unit (
     always_comb begin
         if (opcode == `OP_IL_TYPE) begin
             case (funct3)
-                3'b000:  load_size = 2'b00;  // lb (8-bit)
-                3'b001:  load_size = 2'b01;  // lh (16-bit)
+                3'b000:  load_size = 2'b00;  // lb (8-bit signed)
+                3'b001:  load_size = 2'b01;  // lh (16-bit signed)
                 3'b010:  load_size = 2'b10;  // lw (32-bit)
+                3'b100:  load_size = 2'b11;  // lbu (8-bit unsigned)
+                3'b101:  load_size = 2'b11;  // lhu (16-bit unsigned)
                 default: load_size = 2'b10;  // default to lw
             endcase
         end else begin
@@ -112,8 +124,13 @@ module control_unit (
             ALU_Controls = {
                 1'b0, funct3
             };  //funct3만 나가면 되고, 0은 그냥 ALU_controls가 4비트라서 채운거
-            `OP_U_LUI_TYPE: ALU_Controls = `ADD;  // LUI (ALU does not matter, just pass imm)
-            `OP_U_AUIPC_TYPE: ALU_Controls = `ADD;  // AUIPC (ALU adds PC + imm)
+            `OP_U_LUI_TYPE:
+            ALU_Controls = `ADD;  // LUI (ALU does not matter, just pass imm)
+            `OP_U_AUIPC_TYPE:
+            ALU_Controls = `ADD;  // AUIPC (ALU adds PC + imm)
+            `OP_J_JAL_TYPE:
+            ALU_Controls = `ADD;  // JAL (ALU does not matter for jump)
+            `OP_I_JALR_TYPE: ALU_Controls = `ADD;  // JALR (ALU adds rs1 + imm)
             default: ALU_Controls = 4'bx;  // Default to ADD
         endcase
     end
