@@ -60,11 +60,10 @@
 
 ## 🎛️ Key Features
 ### 🔧 Processor Features
-- **Single-Cycle Implementation**: 명령어당 1 클럭 사이클 실행
-- **Harvard Architecture**: 명령어/데이터 메모리 분리
+- **Single-Cycle Implementation**: 1 clk cycle당 하나의 명령어만 실행
+- **Harvard Architecture**: Instruction Mem/Data Mem 분리
 - **Jump and Link Support**: JAL/JALR 명령어를 통한 함수 호출 지원
-- **Branch Prediction**: 정적 분기 예측 (taken/not-taken)
-- **Immediate Support**: 다양한 즉시값 형태 지원
+- **Immediate Support**: Type별 다양한 immediate값 형태 지원
 
 ### 💾 Memory System
 - **Instruction Memory**: 64 × 32-bit ROM
