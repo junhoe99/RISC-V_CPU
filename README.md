@@ -137,106 +137,15 @@
 - **Branch Resolution**: ALU 기반 분기 조건 판별
 - **Jump Support**: JAL/JALR을 위한 전용 주소 계산 경로
 
-## 📁 Project Structure
 
-
-## 🛠️ Installation and Setup
-
-### 📋 Prerequisites
-- **Hardware**: FPGA 개발 보드 (선택사항)
-- **Software**: 
-  - Xilinx Vivado 2018.3 이상
-  - ModelSim/QuestaSim (시뮬레이션용)
-- **Knowledge**: 
-  - SystemVerilog HDL
-  - RISC-V ISA 기본 지식
-  - 디지털 회로 설계
-
-### 🔧 Project Setup
-1. **프로젝트 생성**: Vivado에서 새 프로젝트 생성
-2. **소스 추가**: `sources_1/new/` 폴더의 모든 `.sv` 파일 추가
-3. **최상위 설정**: `RV32I_TOP.sv`를 최상위 모듈로 설정
-4. **시뮬레이션 설정**: `tb.sv`를 시뮬레이션 소스로 추가
-
-## 🖥️ Usage
-
-### 📋 Basic Operation Workflow
-
-#### 1. **⚙️ Simulation Setup**
-   - 테스트벤치 파일 `tb.sv` 확인
-   - 클럭 및 리셋 신호 설정 (10ns 주기)
-   - 시뮬레이션 시간 설정 (30 클럭 사이클)
-
-#### 2. **📝 Test Program Configuration**
-   - `instruction_memory.sv`에서 테스트 명령어 수정
-   - 현재 구성: J-type 명령어 테스트 (JAL/JALR)
-   - 레지스터 초기값 설정 (`register_file.sv`)
-
-#### 3. **🔍 Behavioral Simulation**
-   - Vivado에서 시뮬레이션 실행
-   - 파형 분석을 통한 동작 확인
-   - 레지스터 값 및 메모리 상태 모니터링
-
-#### 4. **🎯 Synthesis & Implementation**
-   - RTL 합성을 통한 하드웨어 생성
-   - 타이밍 제약 설정
-   - FPGA 비트스트림 생성 (선택사항)
-
-### 🎯 Key Parameters
-- **Clock Frequency**: 사용자 정의 (기본 100MHz 권장)
-- **Register Count**: 32개 (x0-x31)
+## 🎯 Key Parameters
+- **Clock Frequency**: 100MHz
+- **Register Count**: 32bit x 32개 (x0-x31)
 - **Memory Size**: 
   - 명령어 메모리: 64 words (256 bytes)
   - 데이터 메모리: 128 bytes
 - **Data Width**: 32-bit 데이터 경로
 
-## 📊 Instruction Format & Encoding
-
-### 🔤 Supported Instruction Types
-
-#### R-Type (Register)
-```
-| funct7 |  rs2  |  rs1  |funct3|  rd   | opcode |
-|31    25|24   20|19   15|14  12|11    7|6      0|
-```
-- **Examples**: ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
-
-#### I-Type (Immediate)
-```
-|    imm[11:0]    |  rs1  |funct3|  rd   | opcode |
-|31            20|19   15|14  12|11    7|6      0|
-```
-- **Examples**: ADDI, SLTI, SLTIU, XORI, ORI, ANDI, SLLI, SRLI, SRAI
-- **Load Instructions**: LW, LH, LB, LBU, LHU
-
-#### S-Type (Store)
-```
-| imm[11:5] |  rs2  |  rs1  |funct3|imm[4:0]| opcode |
-|31       25|24   20|19   15|14  12|11     7|6      0|
-```
-- **Examples**: SW, SH, SB
-
-#### B-Type (Branch)
-```
-|imm[12|10:5]|  rs2  |  rs1  |funct3|imm[4:1|11]| opcode |
-|31        25|24   20|19   15|14  12|11        7|6      0|
-```
-- **Examples**: BEQ, BNE, BLT, BGE, BLTU, BGEU
-
-#### U-Type (Upper Immediate)
-```
-|        imm[31:12]           |  rd   | opcode |
-|31                        12|11    7|6      0|
-```
-- **Examples**: LUI, AUIPC
-
-#### J-Type (Jump)
-```
-|     imm[20|10:1|11|19:12]      |  rd   | opcode |
-|31                           12|11    7|6      0|
-```
-- **JAL**: Jump and Link
-- **JALR**: Jump and Link Register (I-type format)
 
 ## 🔧 Configuration
 
@@ -295,16 +204,6 @@
 - **Branch Instructions**: 분기 동작 확인
 - **Register File**: 레지스터 읽기/쓰기 테스트
 
-## 🤝 Contributing
 
-이 프로젝트는 교육 목적으로 설계되었으며, RISC-V 아키텍처 학습을 위한 참고 구현입니다. 개선사항이나 버그 수정은 언제든 환영합니다.
-
-### 📝 Development Guidelines
-- SystemVerilog 코딩 스타일 준수
-- 모듈식 설계 원칙 유지
-- 충분한 주석 및 문서화
-- 시뮬레이션 검증 필수
 
 ---
-
-**Note**: 이 구현은 RV32I 기본 명령어 세트만을 지원하며, 교육 및 학습 목적으로 최적화되어 있습니다. 상용 제품에 사용하기 전에 추가적인 검증과 최적화가 필요합니다.
