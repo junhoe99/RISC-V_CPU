@@ -79,7 +79,7 @@
 │   │     └── define.sv              # Opcode별 Instruction Type 정의
 │   └── 📂RAM                        # Data Memory
 │   │     └── data_memory.sv        
-│   └── 📂 ROM                       # Instruction Memory
+│   └── 📂ROM                       # Instruction Memory
 │         └── instruction_memory.sv  
 │
 └── 🔎 Testbench               
