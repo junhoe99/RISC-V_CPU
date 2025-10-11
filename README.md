@@ -80,7 +80,7 @@
 │   └── 📂RAM                        # Data Memory
 │   │     └── data_memory.sv        
 │   └── 📂 ROM                       # Instruction Memory
-│        └── instruction_memory.sv  
+│         └── instruction_memory.sv  
 │
 └── 🔎 Testbench               
     └── tb.sv                  # 테스트벤치
