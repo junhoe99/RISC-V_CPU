@@ -57,7 +57,8 @@
 
 ## 🏗️ System Architecture
  - **Block Diagram**
-   <img width="8560" height="6316" alt="image" src="https://github.com/user-attachments/assets/2cb13ab9-03b5-45bf-9f00-c32e183b0e0e" />
+   <img width="8560" height="6316" alt="image" src="https://github.com/user-attachments/assets/7513f643-2be9-439e-a5ab-b088799c2cc1" />
+
 
 
 
