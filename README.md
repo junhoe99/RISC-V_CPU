@@ -90,9 +90,6 @@
     └── 🗂️tb.sv                  # 테스트벤치
 ```
 
-
-
-
 ### 1. CPU Core Components
 - **Datapath**: 데이터 흐름 및 연산 경로 제어
 - **Control Unit**: 명령어 디코딩 및 제어 신호 생성
@@ -104,7 +101,6 @@
 ### 2. Memory System Components
 - **Instruction Memory**: 64개 명령어 저장 가능한 ROM
 - **Data Memory**: 128바이트 데이터 저장 가능한 RAM
-- **Address Generation**: 메모리 주소 계산 및 정렬
 
 ### 3. Supporting Modules
 - **Multiplexers**: 2:1, 4:1, 5:1 데이터 선택기
