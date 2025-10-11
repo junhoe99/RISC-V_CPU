@@ -89,8 +89,9 @@
 - **32-bit RISC-V RV32I**: 기본 정수 명령어 세트 완전 지원
 - **6 Instruction Types**: R, I, S, B, U, J 타입 명령어 완전 구현
 - **32 General-Purpose Registers**: x0(zero) ~ x31 레지스터
-- **Word-Aligned Memory Access**: 4바이트 정렬 메모리 접근
-
+- **Word-Aligned RAM Access**: 4바이트 단위 명령어 메모리 접근
+- **Byte-Aligned ROM Access**: Byte단위 데이터 메모리 접근
+  
 ### 🔧 Processor Features
 - **Single-Cycle Implementation**: 명령어당 1 클럭 사이클 실행
 - **Harvard Architecture**: 명령어/데이터 메모리 분리
