@@ -59,7 +59,32 @@
  - **Block Diagram**
    <img width="8648" height="6316" alt="image" src="https://github.com/user-attachments/assets/4babf779-c79a-4a70-89cc-c598221fde70" />
 
-
+ - **Project Sturucture**
+   
+```
+📁RV32I_RISC_V/
+├── 📂 RV32I_TOP.sv           # 최상위 프로세서 모듈
+│   └── 📂cpu_core.sv          # CPU 코어 (제어+데이터패스)
+│   │     ├── datapath.sv            
+│   │     ├── control_unit.sv        
+│   │     ├── ALU.sv                 # 산술 논리 연산 장치
+│   │     ├── register_file.sv       # 32bit x 32개 레지스터 파일
+│   │     ├── register.sv            
+│   │     ├── program_counter.sv     # 프로그램 카운터
+│   │     ├── extend.sv              # imm값 확장 모듈
+│   │     ├── mux_2x1.sv             # ALUSrcMUX, JALRSrcMUX
+│   │     ├── mux_5x1.sv             
+│   │     ├── pc_adder.sv            # PC 가산기
+│   │     ├── adder.sv               # PCADDER, JALADDER
+│   │     └── define.sv              # Opcode별 Instruction Type 정의
+│   └── 📂RAM                        # Data Memory
+│   │     └── data_memory.sv        
+│   └── 📂 ROM                       # Instruction Memory
+│        └── instruction_memory.sv  
+│
+└── 🔎 Testbench               
+    └── tb.sv                  # 테스트벤치
+```
 
 
 
@@ -114,29 +139,6 @@
 
 ## 📁 Project Structure
 
-```
-RV32I_RISC_V/
-├── 🔧 sources_1/new/           # SystemVerilog 소스 파일
-│   ├── RV32I_TOP.sv           # 최상위 프로세서 모듈
-│   ├── cpu_core.sv            # CPU 코어 (제어+데이터패스)
-│   ├── datapath.sv            # 데이터패스 구현
-│   ├── control_unit.sv        # 제어 유닛
-│   ├── ALU.sv                 # 산술 논리 연산 장치
-│   ├── register_file.sv       # 32개 레지스터 파일
-│   ├── instruction_memory.sv  # 명령어 메모리 (ROM)
-│   ├── data_memory.sv         # 데이터 메모리 (RAM)
-│   ├── program_counter.sv     # 프로그램 카운터
-│   ├── extend.sv              # 즉시값 확장 모듈
-│   ├── mux_2x1.sv            # 2:1 멀티플렉서
-│   ├── mux_4x1.sv            # 4:1 멀티플렉서
-│   ├── mux_5x1.sv            # 5:1 멀티플렉서 (다용도)
-│   ├── pc_adder.sv           # PC 가산기
-│   ├── adder.sv              # 범용 가산기
-│   ├── register.sv           # 기본 레지스터 모듈
-│   └── define.sv             # 명령어 정의 상수
-└── 🧪 sim_1/new/              # 시뮬레이션 파일
-    └── tb.sv                  # 테스트벤치
-```
 
 ## 🛠️ Installation and Setup
 
