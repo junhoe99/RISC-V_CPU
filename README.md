@@ -163,8 +163,8 @@
 ### 🔧 Future Enhancements
 - **Pipeline Implementation**: 5단계 파이프라인 추가
 - **Cache System**: L1 명령어/데이터 캐시
-- **Exception Handling**: 예외 및 인터럽트 처리
-- **Floating Point**: RV32F 부동소수점 확장
+- **Exception Handling**: Exception 및 Interrupt 처리
+- **Floating Point**: 부동소수점 확장
 
 ## 📈 Performance Specifications
 
